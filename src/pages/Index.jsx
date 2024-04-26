@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { Box, Button, Input, List, ListItem, ListIcon, IconButton, useToast } from '@chakra-ui/react';
-import { FaPlus, FaTrash, FaCheckCircle, FaRegCircle } from 'react-icons/fa';
+import { FaPlus, FaTrash, FaCheckCircle, FaRegCircle, FaEdit } from 'react-icons/fa';
 
 const Index = () => {
   const [tasks, setTasks] = useState([]);
   const [input, setInput] = useState('');
+  const [editingId, setEditingId] = useState(null);
   const toast = useToast();
 
   const addTask = () => {
@@ -17,7 +18,12 @@ const Index = () => {
       });
       return;
     }
-    setTasks([...tasks, { id: Date.now(), text: input, isCompleted: false }]);
+    if (editingId) {
+      setTasks(tasks.map(task => task.id === editingId ? { ...task, text: input } : task));
+      setEditingId(null);
+    } else {
+      setTasks([...tasks, { id: Date.now(), text: input, isCompleted: false }]);
+    }
     setInput('');
   };
 
@@ -27,6 +33,12 @@ const Index = () => {
 
   const toggleTaskCompletion = (id) => {
     setTasks(tasks.map(task => task.id === id ? { ...task, isCompleted: !task.isCompleted } : task));
+  };
+
+  const initiateEdit = (id) => {
+    const taskToEdit = tasks.find(task => task.id === id);
+    setInput(taskToEdit.text);
+    setEditingId(id);
   };
 
   return (
@@ -53,6 +65,11 @@ const Index = () => {
             <Box flex="1" as="span" ml={2} textDecoration={task.isCompleted ? 'line-through' : 'none'}>
               {task.text}
             </Box>
+            <IconButton
+              icon={<FaEdit />}
+              colorScheme="purple"
+              onClick={() => initiateEdit(task.id)}
+            />
             <IconButton
               icon={<FaTrash />}
               colorScheme="red"
