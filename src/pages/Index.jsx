@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Box, Button, Input, List, ListItem, ListIcon, IconButton, useToast } from '@chakra-ui/react';
+import { Box, Button, Input, List, ListItem, ListIcon, IconButton, useToast, Image } from '@chakra-ui/react';
 import { FaPlus, FaTrash, FaCheckCircle, FaRegCircle, FaEdit } from 'react-icons/fa';
 
 const Index = () => {
@@ -43,6 +43,7 @@ const Index = () => {
 
   return (
     <Box p={5}>
+      <Image src="/images/fabian-hedin.png" alt="Fabian Hedin" boxSize="200px" m="auto" display="block" mb={4} />
       <Input
         placeholder="Add a new task..."
         value={input}
